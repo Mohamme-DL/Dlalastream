@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dlala Stream</string>
+    <string name="settings">الإعدادات</string>
+    <string name="refresh">تحديث</string>
+    <string name="enter_url">أدخل رابط قائمة التشغيل (M3U8)</string>
+    <string name="save">حفظ</string>
+    <string name="cancel">إلغاء</string>
+    <string name="empty_hint">لم تتم إضافة مصدر بعد. افتح الإعدادات وأدخل رابط M3U8 الخاص بك.</string>
+    <string name="loading">جارٍ التحميل…</string>
+    <string name="load_error">تعذر تحميل القائمة. تحقق من الرابط والاتصال.</string>
+    <string name="play_error">تعذر تشغيل هذا المحتوى.</string>
+    <string name="single_stream_title">تشغيل البث</string>
+    <string name="untitled">بدون عنوان</string>
+</resources>
