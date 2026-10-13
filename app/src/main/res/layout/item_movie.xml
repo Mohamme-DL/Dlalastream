@@ -2,17 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_margin="7dp"
+    android:padding="7dp"
+    android:orientation="vertical"
     android:background="@drawable/bg_item"
     android:clickable="true"
-    android:focusable="true"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:focusable="true">
 
     <ImageView
         android:id="@+id/movie_poster"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="205dp"
         android:contentDescription="غلاف الفيلم"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_logo" />
@@ -21,10 +21,11 @@
         android:id="@+id/movie_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="54dp"
         android:gravity="center"
-        android:maxLines="3"
-        android:minHeight="52dp"
         android:padding="8dp"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:textColor="@color/text"
         android:textSize="16sp" />
 
