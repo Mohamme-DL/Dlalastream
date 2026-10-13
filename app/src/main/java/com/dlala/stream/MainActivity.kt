@@ -1,8 +1,8 @@
-
 package com.dlala.stream
-
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -22,6 +22,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var movieAdapter: MovieAdapter
     private lateinit var status: TextView
+    private lateinit var searchInput: EditText
+
+    private var allMovies: List<Movie> = emptyList()
+
     private val prefs by lazy {
         getSharedPreferences("dlala", MODE_PRIVATE)
     }
@@ -52,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         status = findViewById(R.id.status)
+        searchInput = findViewById(R.id.search_input)
 
         movieAdapter = MovieAdapter { movie ->
             val intent = Intent(
@@ -67,9 +72,31 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<RecyclerView>(R.id.list).apply {
-            layoutManager = GridLayoutManager(this@MainActivity, 4)
+            layoutManager =
+                GridLayoutManager(this@MainActivity, 4)
             adapter = movieAdapter
         }
+
+        searchInput.addTextChangedListener(object : TextWatcher {
+
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) = Unit
+
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+                filterMovies(s?.toString().orEmpty())
+            }
+
+            override fun afterTextChanged(s: Editable?) = Unit
+        })
 
         findViewById<Button>(R.id.btn_settings)
             .setOnClickListener {
@@ -82,6 +109,27 @@ class MainActivity : AppCompatActivity() {
             }
 
         load()
+    }
+
+    private fun filterMovies(query: String) {
+        val q = query.trim()
+
+        val filtered = if (q.isEmpty()) {
+            allMovies
+        } else {
+            allMovies.filter {
+                it.title.contains(q, ignoreCase = true)
+            }
+        }
+
+        movieAdapter.submit(filtered)
+
+        if (allMovies.isNotEmpty() && filtered.isEmpty()) {
+            status.text = "ما لقيناش فيلم بالاسم هذا"
+            status.visibility = View.VISIBLE
+        } else if (allMovies.isNotEmpty()) {
+            status.visibility = View.GONE
+        }
     }
 
     private fun showStatus(resId: Int?) {
@@ -97,6 +145,7 @@ class MainActivity : AppCompatActivity() {
         val url = prefs.getString(KEY_URL, "").orEmpty()
 
         if (url.isBlank()) {
+            allMovies = emptyList()
             movieAdapter.submit(emptyList())
             showStatus(R.string.empty_hint)
             return
@@ -118,11 +167,12 @@ class MainActivity : AppCompatActivity() {
             val items = result.getOrNull()
 
             if (items.isNullOrEmpty()) {
+                allMovies = emptyList()
                 movieAdapter.submit(emptyList())
                 showStatus(R.string.load_error)
             } else {
-                movieAdapter.submit(items)
-                showStatus(null)
+                allMovies = items
+                filterMovies(searchInput.text.toString())
             }
         }
     }
