@@ -72,9 +72,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<RecyclerView>(R.id.list).apply {
-            layoutManager =
-                GridLayoutManager(this@MainActivity, 4)
+            layoutManager = GridLayoutManager(
+                this@MainActivity,
+                6
+            )
+
             adapter = movieAdapter
+            isFocusable = true
+            isFocusableInTouchMode = true
         }
 
         searchInput.addTextChangedListener(object : TextWatcher {
