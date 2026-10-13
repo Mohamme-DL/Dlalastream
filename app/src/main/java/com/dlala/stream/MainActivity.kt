@@ -1,3 +1,4 @@
+
 package com.dlala.stream
 
 import android.content.Intent
@@ -21,10 +22,13 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var movieAdapter: MovieAdapter
     private lateinit var status: TextView
-    private val prefs by lazy { getSharedPreferences("dlala", MODE_PRIVATE) }
+    private val prefs by lazy {
+        getSharedPreferences("dlala", MODE_PRIVATE)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         try {
             setup()
         } catch (e: Throwable) {
@@ -35,7 +39,12 @@ class MainActivity : AppCompatActivity() {
                 textSize = 14f
                 setPadding(32, 32, 32, 32)
             }
-            setContentView(ScrollView(this).apply { addView(tv) })
+
+            setContentView(
+                ScrollView(this).apply {
+                    addView(tv)
+                }
+            )
         }
     }
 
@@ -43,19 +52,34 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         status = findViewById(R.id.status)
+
         movieAdapter = MovieAdapter { movie ->
-            startActivity(
-                Intent(this, PlayerActivity::class.java)
-                    .putExtra(PlayerActivity.EXTRA_URL, movie.url)
-                    .putExtra(PlayerActivity.EXTRA_TITLE, movie.title)
-            )
+            val intent = Intent(
+                this,
+                PlayerActivity::class.java
+            ).apply {
+                putExtra(PlayerActivity.EXTRA_URL, movie.url)
+                putExtra(PlayerActivity.EXTRA_TITLE, movie.title)
+                putExtra(PlayerActivity.EXTRA_SUBTITLE, movie.subtitle)
+            }
+
+            startActivity(intent)
         }
+
         findViewById<RecyclerView>(R.id.list).apply {
             layoutManager = GridLayoutManager(this@MainActivity, 4)
             adapter = movieAdapter
         }
-        findViewById<Button>(R.id.btn_settings).setOnClickListener { showUrlDialog() }
-        findViewById<Button>(R.id.btn_refresh).setOnClickListener { load() }
+
+        findViewById<Button>(R.id.btn_settings)
+            .setOnClickListener {
+                showUrlDialog()
+            }
+
+        findViewById<Button>(R.id.btn_refresh)
+            .setOnClickListener {
+                load()
+            }
 
         load()
     }
@@ -71,12 +95,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun load() {
         val url = prefs.getString(KEY_URL, "").orEmpty()
+
         if (url.isBlank()) {
             movieAdapter.submit(emptyList())
             showStatus(R.string.empty_hint)
             return
         }
+
         showStatus(R.string.loading)
+
         lifecycleScope.launch {
             val result = withContext(Dispatchers.IO) {
                 runCatching {
@@ -87,7 +114,9 @@ class MainActivity : AppCompatActivity() {
                     )
                 }
             }
+
             val items = result.getOrNull()
+
             if (items.isNullOrEmpty()) {
                 movieAdapter.submit(emptyList())
                 showStatus(R.string.load_error)
@@ -105,11 +134,18 @@ class MainActivity : AppCompatActivity() {
             layoutDirection = View.LAYOUT_DIRECTION_LTR
             setSingleLine()
         }
+
         AlertDialog.Builder(this)
             .setTitle(R.string.enter_url)
             .setView(input)
             .setPositiveButton(R.string.save) { _, _ ->
-                prefs.edit().putString(KEY_URL, input.text.toString().trim()).apply()
+                prefs.edit()
+                    .putString(
+                        KEY_URL,
+                        input.text.toString().trim()
+                    )
+                    .apply()
+
                 load()
             }
             .setNegativeButton(R.string.cancel, null)
