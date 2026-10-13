@@ -1,58 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="12dp"
-    android:background="#101010">
+    android:background="@color/bg"
+    android:paddingStart="28dp"
+    android:paddingEnd="28dp"
+    android:paddingTop="18dp"
+    android:paddingBottom="12dp">
 
+    <!-- رأس التطبيق -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="18dp">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_logo" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingStart="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DLALA STREAM"
+                android:textColor="@color/text"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="عالم الترفيه بين يديك"
+                android:textColor="@color/text_dim"
+                android:textSize="15sp" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/btn_settings"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="إعدادات القائمة" />
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:text="الإعدادات"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/btn_refresh"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="تحديث" />
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:layout_marginStart="8dp"
+            android:text="تحديث"
+            android:textAllCaps="false" />
 
     </LinearLayout>
 
+    <!-- البحث -->
     <EditText
         android:id="@+id/search_input"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_height="54dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_item"
         android:hint="ابحث عن فيلم..."
         android:inputType="text"
         android:singleLine="true"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#BBBBBB"
-        android:backgroundTint="#888888"
-        android:padding="12dp" />
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
+        android:textColor="@color/text"
+        android:textColorHint="@color/text_dim"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:text="اكتشف مكتبتك"
+        android:textColor="@color/text"
+        android:textSize="23sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:text="أدخل رابط قائمة M3U"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp" />
+        android:padding="10dp"
+        android:text="أضف رابط قائمة التشغيل من الإعدادات للبدء"
+        android:textColor="@color/text_dim"
+        android:textSize="17sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="16dp"
+        android:descendantFocusability="afterDescendants" />
 
 </LinearLayout>
